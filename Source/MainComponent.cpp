@@ -59,12 +59,22 @@ void MainComponent::releaseResources()
 }
 
 //==============================================================================
-void MainComponent::paint (juce::Graphics& g)
+void MainComponent::paint(juce::Graphics& g)
 {
-    // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+    // 1. Pulisce lo sfondo riempiendolo di un colore (es. grigio scuro)
+    g.fillAll(juce::Colours::darkgrey);
 
-    // You can add your drawing code here!
+    // 2. Imposta il colore del testo (es. bianco)
+    g.setColour(juce::Colours::white);
+
+    // 3. Imposta la dimensione e lo stile del font
+    g.setFont(juce::Font(30.0f, juce::Font::bold));
+
+    // 4. Disegna il testo al centro della finestra
+    g.drawText("Hello World! - Progetto CMLS",
+        getLocalBounds(),        // L'area in cui disegnare (tutta la finestra)
+        juce::Justification::centred, // Allineamento
+        true);                   // Aggiunge i puntini di sospensione se il testo è troppo lungo
 }
 
 void MainComponent::resized()
