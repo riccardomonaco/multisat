@@ -71,7 +71,7 @@ void MainComponent::paint(juce::Graphics& g)
     g.setFont(juce::Font(30.0f, juce::Font::bold));
 
     // 4. Disegna il testo al centro della finestra
-    g.drawText("Hello World! - Progetto CMLS",
+    g.drawText("Mazze is goddamn GAYYYY",
         getLocalBounds(),        // L'area in cui disegnare (tutta la finestra)
         juce::Justification::centred, // Allineamento
         true);                   // Aggiunge i puntini di sospensione se il testo è troppo lungo
