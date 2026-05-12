@@ -1,0 +1,13 @@
+# Escludi le build locali
+Builds/
+JuceLibraryCode/
+/cmake-build-*/
+
+# Escludi file di sistema e IDE
+.DS_Store
+*.user
+*.suo
+*.v12
+*.v11
+*.ncb
+*.sdf
