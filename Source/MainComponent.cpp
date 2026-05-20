@@ -7,6 +7,39 @@ MainComponent::MainComponent()
     // you add any child components.
     setSize (800, 600);
 
+    // Nota: Sostituisci questo percorso con quello effettivo in cui si trova scsynth sul tuo sistema.
+    // In fase di release, questo percorso sarà relativo alla tua applicazione.
+    juce::String scPath = "/Applications/SuperCollider.app/Contents/Resources/scsynth";
+    juce::StringArray scArgs{ scPath, "-u", "57110" }; // 57110 è la porta di ascolto UDP standard di scsynth
+
+    // 2. Lancia il server in background
+    if (scServer.start(scArgs)) {
+        DBG("SuperCollider avviato con successo.");
+    }
+    else {
+        DBG("ERRORE: Impossibile avviare SuperCollider. Controlla il percorso.");
+    }
+
+    // 3. Connetti il modulo OSC di JUCE alla porta appena aperta
+    if (!oscSender.connect("127.0.0.1", 57110)) {
+        DBG("ERRORE: Impossibile creare il socket OSC.");
+    }
+
+    playButton.setButtonText("Avvia Suono");
+    playButton.onClick = [this] {
+        // 1. Carica il file binario compilato.
+        // ATTENZIONE: Usa il path assoluto corretto del file .scsyndef sul tuo disco
+        oscSender.send("/d_load", "/percorso/assoluto/verso/terrain.scsyndef");
+
+        // 2. Istanzia il Synth
+        // Argomenti: nome_synth, NodeID (1000), AddAction (1 = tail), TargetID (0 = root)
+        // Aggiungiamo anche il parametro "amp" a 0.5 per sicurezza
+        oscSender.send("/s_new", "terrain", 1000, 1, 0, "amp", 0.5f);
+        };
+
+    // Rende il componente visibile sulla GUI
+    addAndMakeVisible(playButton);
+
     // Some platforms require permissions to open input channels so request that here
     if (juce::RuntimePermissions::isRequired (juce::RuntimePermissions::recordAudio)
         && ! juce::RuntimePermissions::isGranted (juce::RuntimePermissions::recordAudio))
@@ -23,6 +56,11 @@ MainComponent::MainComponent()
 
 MainComponent::~MainComponent()
 {
+
+    if (scServer.isRunning()) {
+        scServer.kill();
+        DBG("SuperCollider terminato.");
+    }
     // This shuts down the audio device and clears the audio source.
     shutdownAudio();
 }
