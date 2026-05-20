@@ -71,7 +71,7 @@ void MainComponent::paint(juce::Graphics& g)
     g.setFont(juce::Font(30.0f, juce::Font::bold));
 
     // 4. Disegna il testo al centro della finestra
-    g.drawText("Mazze is goddamn GAYYYY",
+    g.drawText("It feels so empty in here...",
         getLocalBounds(),        // L'area in cui disegnare (tutta la finestra)
         juce::Justification::centred, // Allineamento
         true);                   // Aggiunge i puntini di sospensione se il testo è troppo lungo
